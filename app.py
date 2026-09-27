@@ -45,18 +45,45 @@ def delete_task(number_to_delete):
         return None
 
 
-def save_todos():
+FILENAME = "todos.csv"
+
+
+def save_todos(filename=FILENAME):
     """
     Persiste las tareas actuales en el archivo todos.csv.
     """
-    pass
+    try:
+        with open(filename, mode="w", newline="", encoding="utf-8") as file:
+            writer = csv.writer(file)
+            for task in todos:
+                writer.writerow([task])
+        print(f"Tareas guardadas exitosamente en '{filename}'.")
+        return True
+    except Exception as e:
+        print(f"Error al guardar las tareas: {e}")
+        return False
 
 
-def load_todos():
+def load_todos(filename=FILENAME):
     """
     Lee todos.csv y reconstruye la lista de tareas en memoria.
     """
-    pass
+    if not os.path.exists(filename):
+        print(f"El archivo '{filename}' no existe todavía. Se iniciará con una lista vacía.")
+        return False
+
+    try:
+        todos.clear()
+        with open(filename, mode="r", newline="", encoding="utf-8") as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if row:  # Ignorar filas vacías
+                    todos.append(row[0])
+        print(f"Tareas cargadas exitosamente desde '{filename}'.")
+        return True
+    except Exception as e:
+        print(f"Error al cargar las tareas: {e}")
+        return False
 
 
 def main():
