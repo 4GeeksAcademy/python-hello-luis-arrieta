@@ -90,7 +90,53 @@ def main():
     """
     Punto de entrada principal para ejecutar la aplicación CLI.
     """
-    print("Todo List CLI iniciada.")
+    print("--- TODO LIST CLI ---")
+    
+    # Intentar cargar tareas guardadas al iniciar
+    load_todos()
+
+    while True:
+        print("\nSelecciona una opción:")
+        print("1. Agregar una tarea")
+        print("2. Mostrar tareas")
+        print("3. Eliminar una tarea")
+        print("4. Guardar tareas en CSV")
+        print("5. Cargar tareas desde CSV")
+        print("6. Salir")
+
+        choice = input("\nOpción > ").strip()
+
+        if choice == "1":
+            title = input("Ingresa el título de la tarea: ")
+            if add_one_task(title):
+                print(f"Tarea '{title.strip()}' agregada exitosamente.")
+            else:
+                print("El título de la tarea no puede estar vacío.")
+
+        elif choice == "2":
+            print("\n--- Lista de Tareas ---")
+            print_list()
+
+        elif choice == "3":
+            print_list()
+            if todos:
+                num = input("Ingresa el número de la tarea a eliminar: ")
+                deleted = delete_task(num)
+                if deleted:
+                    print(f"Tarea '{deleted}' eliminada exitosamente.")
+
+        elif choice == "4":
+            save_todos()
+
+        elif choice == "5":
+            load_todos()
+
+        elif choice == "6":
+            print("¡Hasta luego!")
+            break
+
+        else:
+            print("Opción inválida. Por favor, selecciona un número del 1 al 6.")
 
 
 if __name__ == "__main__":
